@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 
 import { SideBar } from './components/SideBar';
 import { Content } from './components/Content';
@@ -51,9 +51,25 @@ export function App() {
     })
   }, [selectedGenreId]);
 
-  function handleClickButton(id: number) {
-    setSelectedGenreId(id);
-  }
+  // useMemo(()=>{
+  //   api.get<GenreResponseProps[]>('genres').then(response => setGenres(response.data));
+  // }, []);
+
+  // useMemo(()=>{
+  //   api.get<MovieProps[]>(`movies/?Genre_id=${selectedGenreId}`).then(response => {
+  //     setMovies(response.data);
+  //   });
+  //   api.get<GenreResponseProps>(`genres/${selectedGenreId}`).then(response => {
+  //     setSelectedGenre(response.data);
+  //   })
+  // }, [selectedGenreId]);
+
+  // that useMemo should not be used to manage side effects like asynchronous API calls.
+
+  const handleClickButton = useCallback(
+    (id: number) => setSelectedGenreId(id)
+    , []
+  )
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
